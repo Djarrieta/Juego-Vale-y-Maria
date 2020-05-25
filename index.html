@@ -2,11 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vale y Maria</title>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        .col{
+            border: 1px solid red;
+        }
+        .imgDj{
+            padding: 5vw;
+            height: 12vw;
+            background-image: url('./img/0.png');
+            background-repeat: no-repeat;
+            background-size: 70% ;
+            background-position: center;
+            background-color: rgb(237,28,36);
+            border: 1px solid black ;
+            border-radius: 50%;
+        }
+        .containerDj{
+            width: 50%;
+        }
+
+    </style>
 </head>
-<body>
-    hola
-    
+<body onmousedown="Seleccion(event)">
+    <div class="containerDj container">
+        <div class="row">
+            <div id="1" class="imgDj col s3"></div>
+            <div id="2" class="imgDj col s3"></div>
+            <div id="3" class="imgDj col s3"></div>
+            <div id="4" class="imgDj col s3"></div>
+            <div id="5" class="imgDj col s3"></div>
+            <div id="6" class="imgDj col s3"></div>
+            <div id="7" class="imgDj col s3"></div>
+            <div id="8" class="imgDj col s3"></div>
+            <div id="9" class="imgDj col s3"></div>
+            <div id="10" class="imgDj col s3"></div>
+            <div id="11" class="imgDj col s3"></div>
+            <div id="12" class="imgDj col s3"></div>
+            <div id="13" class="imgDj col s3"></div>
+            <div id="14" class="imgDj col s3"></div>
+            <div id="15" class="imgDj col s3"></div>
+            <div id="16" class="imgDj col s3"></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        var secuencia=[1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8]
+        var PrimeraVez=true
+        var FotoGuardada=0
+        var DivGuardado=0
+        var DivMarcado=[0]
+
+        for (var i = secuencia.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = secuencia[i];
+            secuencia[i] = secuencia[j];
+            secuencia[j] = temp;
+        }
+        console.log('La secuencia es '+secuencia)
+        CerrarTodo()
+        function Seleccion(e){
+            var DivClickeado = document.getElementById(e.target.id)
+            var FotoClickeada = secuencia[DivClickeado.id-1]
+
+            console.log('------------------------')
+
+            if(DivClickeado.style.backgroundImage.substr(10,1)!=0){
+                console.log('se sale porque ya esta mostrada la foto')
+                return
+            }
+
+            if(PrimeraVez){
+                console.log('entra la primera vez')
+                FotoGuardada=FotoClickeada
+                DivGuardado=DivClickeado.id
+                PrimeraVez=false
+                DivClickeado.style.backgroundImage = "url('/img/"+ FotoClickeada +".png')"
+                console.log('PrimeraVez es ' + PrimeraVez + ' se guarla la foto '+ FotoGuardada)
+            }else{
+                console.log('entra la segunda vez')
+                if(FotoClickeada==FotoGuardada){
+                    console.log('fotos  coinciden')
+                    DivMarcado.push(DivClickeado.id)
+                    DivMarcado.push(DivGuardado)
+                    console.log('DivMarcado es '+DivMarcado)
+                }else{
+                    console.log('fotos no coinciden')
+                    setTimeout(CerrarTodo,500)
+                }
+                console.log('se reestablecen valores')
+                DivClickeado.style.backgroundImage = "url('/img/"+ FotoClickeada +".png')"
+                FotoGuardada=0
+                DivGuardado=0
+                PrimeraVez=true
+            }
+        }
+        function CerrarTodo(){
+            console.log('set time out y oculta todo')
+            for(var i=1;i<=16;i++){
+                //console.log('i = '+ i + '; divmarcado incluye:  '+ DivMarcado.includes(i))
+                if(!DivMarcado.includes(i.toString())){
+                    document.getElementById(i).style.backgroundImage = "url('/img/0.png')"
+                }
+            }
+        }
+
+    </script>
 </body>
 </html>
+
